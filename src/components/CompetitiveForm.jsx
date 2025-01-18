@@ -14,7 +14,7 @@ const CompetitiveExamsForm = () => {
                                 <label>Exam Name:</label>
                                 <Field name={`competitiveExams[${index}].examName`} placeholder="Exam Name" />
                                 <label>Year of Passing:</label>
-                                <Field name={`competitiveExams[${index}].yearOfPassing`} type="date" />
+                                <Field name={`competitiveExams[${index}].yearOfPassing`} />
                                 <button type="button" onClick={() => remove(index)}>Remove</button>
                             </div>
                         ))}

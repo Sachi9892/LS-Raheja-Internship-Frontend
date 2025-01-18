@@ -9,7 +9,6 @@ import WorkExperienceForm from "./components/WorkExperienceForm"
 import PhdForm from "./components/PhdForm"
 
 const initialValues = {
-  role: "",
   personalInfo: {
     firstName: "",
     middleName: "",
@@ -87,6 +86,7 @@ const ApplicantForm = () => (
             <option value="PROFESSOR">PROFESSOR</option>
             <option value="ASSISTANT_PROFESSOR">ASSISTANT PROFESSOR</option>
             <option value="ASSOCIATE_PROFESSOR">ASSOCIATE PROFESSOR</option>
+            <option value="VISITING_FACULTY">VISTING FACULTY</option>
           </Field>
         </div>
         <PersonalInfoForm />
@@ -101,7 +101,7 @@ const ApplicantForm = () => (
               <Field name={`competitiveExams.${index}.isAppeared`} type="checkbox" /> Yes
               <Field
                 name={`competitiveExams.${index}.yearOfPassing`}
-                type="text"
+                type="num"
                 placeholder="Enter Year"
                 disabled={!values.competitiveExams[index].isAppeared}
               />

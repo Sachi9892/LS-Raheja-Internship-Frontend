@@ -39,7 +39,6 @@ const PhdForm = () => {
             <label>Year of Passing:</label>
             <Field
                 name="phd.yearOfPassing"
-                type="date"
                 disabled={!isPhdCompleted} // Enable only if status is COMPLETED
             />
 
@@ -78,8 +77,8 @@ const PhdForm = () => {
             {/* Papers presnted in confrence */}
             <Field as="select" name="phd.presentedInConference">
                 <option value="">Paper Presented in Conferences</option>
-                <option value="YES">Yes</option>
-                <option value="FALSE">False</option>
+                <option value="True">Yes</option>
+                <option value="False">False</option>
             </Field>
 
         </div>

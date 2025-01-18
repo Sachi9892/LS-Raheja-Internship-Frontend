@@ -8,7 +8,7 @@ const AddressForm = () => {
             <label>State:</label>
             <Field as="select" name="address.state">
                 <option value="">Select State</option>
-                <option value="STATE1">State 1</option>
+                <option value="Maharashtra">Maharashtra</option>
                 <option value="STATE2">State 2</option>
                 {/* Add more states here */}
             </Field>

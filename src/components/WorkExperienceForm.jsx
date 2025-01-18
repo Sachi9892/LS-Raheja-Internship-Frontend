@@ -87,9 +87,10 @@ const WorkExperienceForm = () => {
                                                 disabled={isFresher}
                                             >
                                                 <option value="">Select Notice Period</option>
-                                                <option value="1 month">1 Month</option>
-                                                <option value="2 months">2 Months</option>
-                                                <option value="3 months">3 Months</option>
+                                                <option value="LESS_THEN_1_MONTH">Less than a month</option>
+                                                <option value="TWO_MONTHS">Less then 2 Month</option>
+                                                <option value="THREE_MONTHS">3 Months</option>
+                                                <option value="MORE_THAN_3_MONTHS">More than 3 Months</option>
                                             </Field>
                                         </>
                                     )}

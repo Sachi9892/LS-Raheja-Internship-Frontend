@@ -15,7 +15,7 @@ const PersonalInfoForm = () => {
             <label>Email:</label>
             <Field name="personalInfo.email" placeholder="Email" type="email" />
             <label>Phone:</label>
-            <Field name="personalInfo.phone" placeholder="Phone" type="text" />
+            <Field name="personalInfo.phone" placeholder="Phone" />
             <label>Date of Birth:</label>
             <Field name="personalInfo.dob" type="date" />
             <label>Gender:</label>

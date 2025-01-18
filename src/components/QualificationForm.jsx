@@ -51,7 +51,7 @@ const QualificationForm = () => {
                                     <label>Year of Passing:</label>
                                     <Field
                                         name={`qualifications[${index}].yearOfPassing`}
-                                        type="number"
+                                        type="num"
                                     />
                                     <label>CGPA:</label>
                                     <Field
