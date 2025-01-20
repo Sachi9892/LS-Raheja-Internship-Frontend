@@ -1,8 +1,19 @@
+//import React from "react";
 import { Field, useFormikContext } from "formik";
 
 const CompetitiveExamsForm = () => {
 
-    const { values } = useFormikContext(); // Access Formik values
+    const { values, setFieldValue } = useFormikContext(); // Access Formik values and setFieldValue
+
+    const handleCheckboxChange = (index) => {
+        const isChecked = values.competitiveExams[index].isAppeared;
+        setFieldValue(`competitiveExams.${index}.isAppeared`, !isChecked);
+
+        // Clear yearOfPassing if unchecked
+        if (isChecked) {
+            setFieldValue(`competitiveExams.${index}.yearOfPassing`, null);
+        }
+    };
 
     return (
         <div>
@@ -10,16 +21,18 @@ const CompetitiveExamsForm = () => {
             {values.competitiveExams.map((exam, index) => (
                 <div key={index}>
                     <label>{exam.examName}</label>
-                    <Field
-                        name={`competitiveExams.${index}.isAppeared`}
+                    <input
                         type="checkbox"
-                    />{" "}
+                        name={`competitiveExams.${index}.isAppeared`}
+                        checked={exam.isAppeared}
+                        onChange={() => handleCheckboxChange(index)}
+                    />
                     Yes
                     <Field
                         name={`competitiveExams.${index}.yearOfPassing`}
                         type="text"
                         placeholder="Enter Year"
-                        disabled={!values.competitiveExams[index].isAppeared}
+                        disabled={!exam.isAppeared}
                     />
                 </div>
             ))}

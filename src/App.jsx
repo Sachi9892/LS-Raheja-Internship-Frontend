@@ -1,6 +1,6 @@
 // ApplicantForm.js
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import axios from "axios";
 import PersonalInfoForm from "./components/PersonalInfoForm"
 import AddressForm from "./components/AddressForm";
@@ -9,11 +9,10 @@ import WorkExperienceForm from "./components/WorkExperienceForm"
 import PhdForm from "./components/PhdForm"
 import CompetitiveExamsForm from "./components/CompetitiveFormExam";
 
+
 const initialValues = {
-  applicantDto: {
-    role: "PROFESSOR"
-  },
   personalInfo: {
+    role: "",
     firstName: "",
     middleName: "",
     lastName: "",
@@ -36,28 +35,28 @@ const initialValues = {
     cgpa: ''
   }],
   workExperience: {
-    isFresher: "false", // Default value for Fresher/Experienced
+    isFresher: "true", // Default value for Fresher/Experienced
     list: [
       {
-        organizationName: '',
-        jobTitle: '',
-        isCurrentlyWorking: false,
+        organizationName: 'null',
+        jobTitle: 'null',
+        isCurrentlyWorking: "false",
         fromDate: '',
         toDate: '',
-        currentSalary: 0,
-        noticePeriod: ''
+        currentSalary: '0',
+        noticePeriod: 'NOT_APPLICABLE'
       },
     ],
   },
   phd: {
     status: "NOT_APPLICABLE",
-    universityName: "",
-    yearOfPassing: "",
+    universityName: "null",
+    yearOfPassing: "null",
     scopusIndexedPublications: 0,
-    scopusId: "",
+    scopusId: "null",
     presentedInConference: false,
     wosIndexedPublications: 0,
-    wosId: "",
+    wosId: "null",
   },
   competitiveExams: [
     { examName: "NET", isAppeared: false, yearOfPassing: "" },
@@ -82,17 +81,6 @@ const ApplicantForm = () => (
 
     {({ values }) => (
       <Form>
-        <h1>Applicant Form</h1>
-        <div>
-          <label>Role: </label>
-          <Field as="select" name="applicantDto.role">
-            <option value="">Select</option>
-            <option value="PROFESSOR">PROFESSOR</option>
-            <option value="ASSISTANT_PROFESSOR">ASSISTANT PROFESSOR</option>
-            <option value="ASSOCIATE_PROFESSOR">ASSOCIATE PROFESSOR</option>
-            <option value="VISITING_FACULTY">VISTING FACULTY</option>
-          </Field>
-        </div>
 
         <PersonalInfoForm />
         <AddressForm />

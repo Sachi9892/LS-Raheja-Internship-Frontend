@@ -5,6 +5,14 @@ import { Field } from "formik";
 const PersonalInfoForm = () => {
     return (
         <div>
+            <label>Role: </label>
+            <Field as="select" name="personalInfo.role">
+                <option value="">Select</option>
+                <option value="PROFESSOR">PROFESSOR</option>
+                <option value="ASSISTANT_PROFESSOR">ASSISTANT PROFESSOR</option>
+                <option value="ASSOCIATE_PROFESSOR">ASSOCIATE PROFESSOR</option>
+                <option value="VISITING_FACULTY">VISTING FACULTY</option>
+            </Field>
             <h2>Personal Information</h2>
             <label>First Name:</label>
             <Field name="personalInfo.firstName" placeholder="First Name" />
