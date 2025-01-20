@@ -7,8 +7,12 @@ import AddressForm from "./components/AddressForm";
 import QualificationForm from "./components/QualificationForm"
 import WorkExperienceForm from "./components/WorkExperienceForm"
 import PhdForm from "./components/PhdForm"
+import CompetitiveExamsForm from "./components/CompetitiveFormExam";
 
 const initialValues = {
+  applicantDto: {
+    role: "PROFESSOR"
+  },
   personalInfo: {
     firstName: "",
     middleName: "",
@@ -35,13 +39,13 @@ const initialValues = {
     isFresher: "false", // Default value for Fresher/Experienced
     list: [
       {
-        organizationName: "",
-        jobTitle: "",
+        organizationName: '',
+        jobTitle: '',
         isCurrentlyWorking: false,
-        fromDate: "",
-        toDate: "",
-        currentSalary: "",
-        noticePeriod: "",
+        fromDate: '',
+        toDate: '',
+        currentSalary: 0,
+        noticePeriod: ''
       },
     ],
   },
@@ -89,27 +93,14 @@ const ApplicantForm = () => (
             <option value="VISITING_FACULTY">VISTING FACULTY</option>
           </Field>
         </div>
+
         <PersonalInfoForm />
         <AddressForm />
         <QualificationForm />
-        {/* Competitive Exams */}
-        <div>
-          <h3>Competitive Exams</h3>
-          {values.competitiveExams.map((exam, index) => (
-            <div key={index}>
-              <label>{exam.examName}</label>
-              <Field name={`competitiveExams.${index}.isAppeared`} type="checkbox" /> Yes
-              <Field
-                name={`competitiveExams.${index}.yearOfPassing`}
-                type="num"
-                placeholder="Enter Year"
-                disabled={!values.competitiveExams[index].isAppeared}
-              />
-            </div>
-          ))}
-        </div>
+        <CompetitiveExamsForm />
         <WorkExperienceForm />
         <PhdForm />
+
         <button type="submit">Submit</button>
         <pre>{JSON.stringify(values, null, 2)}</pre>
       </Form>

@@ -27,6 +27,13 @@ const QualificationForm = () => {
                                             Higher Secondary
                                         </option>
                                     </Field>
+
+                                    <label>Degree Name : </label>
+                                    <Field
+                                        name={`qualifications[${index}].degreeName`}
+                                        
+                                    />
+
                                     <label>Education Mode:</label>
                                     <Field
                                         as="select"
