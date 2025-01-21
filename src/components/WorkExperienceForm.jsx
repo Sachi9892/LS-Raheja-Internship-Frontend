@@ -149,7 +149,7 @@ const WorkExperienceForm = () => {
                                     <label>Salary:</label>
                                     <Field
                                         name={`workExperience.list[${index}].currentSalary`}
-                                        placeholder="Current Salary"
+                                        placeholder="Enter Salary (Gross)"
                                         type="number"
                                         onBlur={(e) => {
                                             if (!e.target.value) {
