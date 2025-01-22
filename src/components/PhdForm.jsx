@@ -1,5 +1,5 @@
 //import React from "react";
-import { Field, useFormikContext } from "formik";
+import { Field, ErrorMessage, useFormikContext } from "formik";
 
 const PhdForm = () => {
     const { values } = useFormikContext(); // Access Formik context to get form values
@@ -34,6 +34,7 @@ const PhdForm = () => {
                 placeholder="University/Organization Name"
                 disabled={isNotApplicable} // Disable for NOT_APPLICABLE or NO
             />
+            <ErrorMessage name="phd.universityName" component="div" style={{ color: "red" }} />
 
             {/* Year of Passing */}
             <label>Year of Passing:</label>
@@ -41,6 +42,7 @@ const PhdForm = () => {
                 name="phd.yearOfPassing"
                 disabled={!isPhdCompleted} // Enable only if status is COMPLETED
             />
+            <ErrorMessage name="phd.yearOfPassing" component="div" style={{ color: "red" }} />
 
             {/* Number of Scopus Indexed Publications */}
             <label>Number of Scopus Indexed Publications:</label>

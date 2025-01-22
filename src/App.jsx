@@ -1,18 +1,26 @@
+//import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+
+import AddressForm from "./components/AddressForm"
 import PersonalInfoForm from "./components/PersonalInfoForm"
-import AddressForm from "./components/AddressForm";
+import CompetitiveFormExam from "./components/CompetitiveFormExam"
+import PhdForm from "./components/PhdForm"
 import QualificationForm from "./components/QualificationForm"
 import WorkExperienceForm from "./components/WorkExperienceForm"
-import PhdForm from "./components/PhdForm"
-import CompetitiveExamsForm from "./components/CompetitiveFormExam";
-import addressValidation from "./validation/addressValidation";
-import competitiveExamsValidation from "./validation/competitiveExamsValidation";
-import personalInfoValidation from "./validation/personalInfoValidation";
-import phdValidation from "./validation/phdValidation";
-import workExperienceValidation from "./validation/workExperienceValidation";
 
+
+// Import your validation schemas
+import {
+  personalInfoValidation,
+  addressValidation,
+  qualificationsValidation,
+  workExperienceValidation,
+  phdValidation,
+  competitiveExamsValidation,
+  fileValidationSchema,
+} from "./validation/FormValidation"
 
 const initialValues = {
   personalInfo: {
@@ -42,15 +50,16 @@ const initialValues = {
     isFresher: "true", // Default value for Fresher/Experienced
     list: [
       {
-        organizationName: ' ',
-        jobTitle: ' ',
+        organizationName: " ",
+        jobTitle: " ",
         isCurrentlyWorking: "false",
-        fromDate: '',
-        toDate: '',
-        currentSalary: '0',
-        noticePeriod: 'NOT_APPLICABLE'
+        fromDate: "",
+        toDate: "",
+        currentSalary: "0",
+        noticePeriod: "NOT_APPLICABLE",
       },
     ],
+    resume: null,
   },
   phd: {
     status: "NOT_APPLICABLE",
@@ -71,8 +80,7 @@ const initialValues = {
 };
 
 const handleSubmit = async (values, { setSubmitting }) => {
-
-  console.log("Form data : ", values);
+  console.log("Form data:", values);
 
   const formData = new FormData();
 
@@ -80,8 +88,8 @@ const handleSubmit = async (values, { setSubmitting }) => {
   formData.append("applicant", new Blob([JSON.stringify(values)], { type: "application/json" }));
 
   // Append resume file
-  if (values.resume) {
-    formData.append("resume", values.resume);
+  if (values.workExperience.resume) {
+    formData.append("resume", values.workExperience.resume);
   }
 
   try {
@@ -96,28 +104,28 @@ const handleSubmit = async (values, { setSubmitting }) => {
   }
 };
 
-//validation
-const formValidationSchema = Yup.object().shape({
-  personalInfo: personalInfoValidation,
-  address: addressValidation,
-  competitiveExams: competitiveExamsValidation,
-  phd: phdValidation,
-  workExperience: workExperienceValidation,
-});
-
 const ApplicantForm = () => (
-
   <Formik
     initialValues={initialValues}
     onSubmit={handleSubmit}
-    validationSchema={formValidationSchema} // Use validationSchema instead of validate
+    validationSchema={Yup.object().shape({
+      personalInfo: personalInfoValidation,
+      address: addressValidation,
+      qualifications: qualificationsValidation,
+      workExperience: workExperienceValidation,
+      phd: phdValidation,
+      competitiveExams: competitiveExamsValidation,
+      resume: fileValidationSchema, // Validation for the resume field
+    })}
+    validateOnChange={true} // Validate when fields change
+    validateOnBlur={true} // Validate when fields lose focus
   >
     {({ values, setFieldValue, errors }) => (
       <Form>
         <PersonalInfoForm />
         <AddressForm />
         <QualificationForm />
-        <CompetitiveExamsForm />
+        <CompetitiveFormExam />
         <WorkExperienceForm />
         <PhdForm />
 
@@ -129,10 +137,9 @@ const ApplicantForm = () => (
             name="resume"
             type="file"
             accept=".pdf"
-            onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+            onChange={(event) => setFieldValue("workExperience.resume", event.currentTarget.files[0])}
           />
         </div>
-
         <button type="submit">Submit</button>
 
         {/* Debugging */}

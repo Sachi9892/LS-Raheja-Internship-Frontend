@@ -13,15 +13,16 @@ const AddressForm = () => {
                 <option value="STATE2">State 2</option>
                 {/* Add more states here */}
             </Field>
-            <ErrorMessage name="address.state" component="div" style={{ color: "white" }} />
+            <ErrorMessage name="address.state" component="div" style={{ color: "red" }} />
 
             <label>City:</label>
             <Field name="address.city" placeholder="City" />
-            <ErrorMessage name="address.city" component="div" style={{ color: "white" }} />
+            <ErrorMessage name="address.city" component="div" style={{ color: "red" }} />
 
             <label>Pin Code:</label>
             <Field name="address.pinCode" placeholder="Pin Code" />
             <ErrorMessage name="address.pinCode" component="div" style={{ color: "red" }} />
+            
         </div>
     );
 };
