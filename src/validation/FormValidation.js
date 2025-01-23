@@ -26,6 +26,7 @@ const addressValidation = Yup.object({
 const qualificationsValidation = Yup.array().of(
   Yup.object({
     degree: Yup.string().required("Degree is required"),
+    degreeName: Yup.string().required("Degree name is required"),
     educationMode: Yup.string().required("Education mode is required"),
     universityName: Yup.string().required("University name is required"),
     specialization: Yup.string().required("Specialization is required"),
@@ -43,26 +44,24 @@ const workExperienceValidation = Yup.object({
   list: Yup.array().when("isFresher", {
     is: (isFresher) => !isFresher,
     then: () =>
-      Yup.array()
-        .of(
-          Yup.object({
-            organizationName: Yup.string().required(
-              "Organization name is required"
-            ),
-            jobTitle: Yup.string().required("Job title is required"),
-            isCurrentlyWorking: Yup.boolean().required(
-              "Specify if currently working"
-            ),
-            fromDate: Yup.date().required("Start date is required"),
-            toDate: Yup.date().when("isCurrentlyWorking", {
-              is: false,
-              then: (schema) => schema.required("End date is required"),
-            }),
-            currentSalary: Yup.number().min(0, "Salary cannot be negative"),
-            noticePeriod: Yup.string().required("Notice period is required"),
-          })
-        )
-        .min(1, "At least one work experience is required"),
+      Yup.array().of(
+        Yup.object({
+          organizationName: Yup.string().required(
+            "Organization name is required"
+          ),
+          jobTitle: Yup.string().required("Job title is required"),
+          isCurrentlyWorking: Yup.boolean().required(
+            "Specify if currently working"
+          ),
+          fromDate: Yup.date().required("Start date is required"),
+          toDate: Yup.date().when("isCurrentlyWorking", {
+            is: false,
+            then: (schema) => schema.required("End date is required"),
+          }),
+          currentSalary: Yup.number().min(0, "Salary cannot be negative"),
+          noticePeriod: Yup.string().required("Notice period is required"),
+        })
+      ),
   }),
 });
 
@@ -88,16 +87,16 @@ const phdValidation = Yup.object({
 
 const competitiveExamsValidation = Yup.array().of(
   Yup.object({
-    examName: Yup.string().required("Exam name is required"),
-    isAppeared: Yup.boolean().required(
-      "Please specify if you appeared for the exam"
-    ),
+    isAppeared: Yup.boolean()
+      .oneOf([true, false], "Please specify if you appeared for the exam")
+      .required("Please specify if you appeared for the exam"),
     yearOfPassing: Yup.string().when("isAppeared", {
       is: true,
       then: () =>
         Yup.string()
           .matches(/^\d{4}$/, "Year must be 4 digits")
           .required("Year of passing is required"),
+      otherwise: () => Yup.string().nullable(),
     }),
   })
 );

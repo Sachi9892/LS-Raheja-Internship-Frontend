@@ -1,5 +1,5 @@
 //import React from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
@@ -47,19 +47,18 @@ const initialValues = {
     cgpa: ''
   }],
   workExperience: {
-    isFresher: "true", // Default value for Fresher/Experienced
+    isFresher: false, // Default value for Fresher/Experienced
     list: [
       {
         organizationName: " ",
         jobTitle: " ",
-        isCurrentlyWorking: "false",
+        isCurrentlyWorking: true,
         fromDate: "",
         toDate: "",
         currentSalary: "0",
         noticePeriod: "NOT_APPLICABLE",
       },
     ],
-    resume: null,
   },
   phd: {
     status: "NOT_APPLICABLE",
@@ -77,6 +76,7 @@ const initialValues = {
     { examName: "SLET", isAppeared: false, yearOfPassing: "" },
     { examName: "GATE", isAppeared: false, yearOfPassing: "" },
   ],
+  resume: null,
 };
 
 const handleSubmit = async (values, { setSubmitting }) => {
@@ -137,8 +137,9 @@ const ApplicantForm = () => (
             name="resume"
             type="file"
             accept=".pdf"
-            onChange={(event) => setFieldValue("workExperience.resume", event.currentTarget.files[0])}
+            onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
           />
+          <ErrorMessage name="resume" component="div" style={{ color: "red" }} />
         </div>
         <button type="submit">Submit</button>
 

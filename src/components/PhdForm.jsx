@@ -24,7 +24,6 @@ const PhdForm = () => {
                 <option value="PURSUING">Pursuing</option>
                 <option value="THESIS_SUBMITTED">Thesis Submitted</option>
                 <option value="NOT_APPLICABLE">Not Applicable</option>
-
             </Field>
 
             {/* Organization Name */}
