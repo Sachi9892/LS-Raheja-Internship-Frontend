@@ -11,6 +11,7 @@ import QualificationForm from "./components/QualificationForm"
 import WorkExperienceForm from "./components/WorkExperienceForm"
 
 
+
 // Import your validation schemas
 import {
   personalInfoValidation,
@@ -80,6 +81,7 @@ const initialValues = {
 };
 
 const handleSubmit = async (values, { setSubmitting }) => {
+
   console.log("Form data:", values);
 
   const formData = new FormData();
@@ -88,8 +90,8 @@ const handleSubmit = async (values, { setSubmitting }) => {
   formData.append("applicant", new Blob([JSON.stringify(values)], { type: "application/json" }));
 
   // Append resume file
-  if (values.workExperience.resume) {
-    formData.append("resume", values.workExperience.resume);
+  if (values.resume) {
+    formData.append("resume", values.resume);
   }
 
   try {
@@ -103,6 +105,7 @@ const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(false);
   }
 };
+
 
 const ApplicantForm = () => (
   <Formik
@@ -129,19 +132,49 @@ const ApplicantForm = () => (
         <WorkExperienceForm />
         <PhdForm />
 
-        {/* File Upload */}
-        <div>
-          <label htmlFor="resume">Upload Resume:</label>
-          <input
-            id="resume"
-            name="resume"
-            type="file"
-            accept=".pdf"
-            onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
-          />
-          <ErrorMessage name="resume" component="div" style={{ color: "red" }} />
+
+        {/* file upload */}
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-6">
+          {/* File Upload Section */}
+          <div className="space-y-2 mb-6">
+            <label htmlFor="resume" className="block text-gray-600 font-medium">
+              Upload Resume
+            </label>
+            <div className="relative">
+              <input
+                id="resume"
+                name="resume"
+                type="file"
+                accept=".pdf"
+                onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+                className="opacity-0 absolute w-full h-full cursor-pointer"
+              />
+              <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
+                <span className="text-gray-500">
+                  {values.resume ? values.resume.name : "Choose a file"}
+                </span>
+                <button
+                  type="button"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={() => document.getElementById("resume").click()}
+                >
+                  Browse
+                </button>
+              </div>
+            </div>
+            <ErrorMessage name="resume" component="div" className="text-red-500 text-sm" />
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Submit
+            </button>
+          </div>
         </div>
-        <button type="submit">Submit</button>
 
         {/* Debugging */}
         <pre>{JSON.stringify(values, null, 2)}</pre>

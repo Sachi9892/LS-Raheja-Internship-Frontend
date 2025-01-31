@@ -72,7 +72,7 @@ const phdValidation = Yup.object({
     then: () => Yup.string().required("University name is required"),
   }),
   yearOfPassing: Yup.string().when("status", {
-    is: (status) => status !== "NOT_APPLICABLE",
+    is: (status) => status == "COMPLETED",
     then: () =>
       Yup.string()
         .matches(/^\d{4}$/, "Year must be 4 digits")
@@ -101,20 +101,18 @@ const competitiveExamsValidation = Yup.array().of(
   })
 );
 
-const fileValidationSchema = Yup.object({
-  resume: Yup.mixed()
-    .required("Resume is required")
-    .test(
-      "fileSize",
-      "File size is too large",
-      (value) => !value || value.size <= 5 * 1024 * 1024
-    )
-    .test(
-      "fileType",
-      "Unsupported file format",
-      (value) => !value || ["application/pdf"].includes(value.type)
-    ),
-});
+const fileValidationSchema = Yup.mixed()
+  .required("Resume is required")
+  .test(
+    "fileSize",
+    "File size is too large",
+    (value) => !value || value.size <= 5 * 1024 * 1024 // 5MB max
+  )
+  .test(
+    "fileType",
+    "Unsupported file format",
+    (value) => !value || ["application/pdf"].includes(value.type) // Only PDFs
+  );
 
 export {
   personalInfoValidation,

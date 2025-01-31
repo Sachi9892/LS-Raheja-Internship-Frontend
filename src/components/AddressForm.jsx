@@ -1,28 +1,47 @@
-//import React from "react";
 import { Field, ErrorMessage } from "formik";
 
 const AddressForm = () => {
     return (
-        <div>
-            <h2>Address Information</h2>
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-700 mb-4">Address Information</h2>
 
-            <label>State:</label>
-            <Field as="select" name="address.state">
-                <option value="">Select State</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="STATE2">State 2</option>
-                {/* Add more states here */}
-            </Field>
-            <ErrorMessage name="address.state" component="div" style={{ color: "red" }} />
+            {/* State Selection */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">State:</label>
+                <Field
+                    as="select"
+                    name="address.state"
+                    className="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-blue-400"
+                >
+                    <option value="">Select State</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="STATE2">State 2</option>
+                    {/* Add more states here */}
+                </Field>
+                <ErrorMessage name="address.state" component="div" className="text-red-500 text-sm" />
+            </div>
 
-            <label>City:</label>
-            <Field name="address.city" placeholder="City" />
-            <ErrorMessage name="address.city" component="div" style={{ color: "red" }} />
+            {/* City */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">City:</label>
+                <Field
+                    name="address.city"
+                    placeholder="City"
+                    className="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="address.city" component="div" className="text-red-500 text-sm" />
+            </div>
 
-            <label>Pin Code:</label>
-            <Field name="address.pinCode" placeholder="Pin Code" />
-            <ErrorMessage name="address.pinCode" component="div" style={{ color: "red" }} />
-            
+            {/* Pin Code */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Pin Code:</label>
+                <Field
+                    name="address.pinCode"
+                    placeholder="Pin Code"
+                    className="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="address.pinCode" component="div" className="text-red-500 text-sm" />
+            </div>
         </div>
     );
 };
