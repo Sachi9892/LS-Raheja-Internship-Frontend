@@ -17,7 +17,8 @@ const PhdForm = () => {
     const isNotApplicable = values.phd?.status === "NOT_APPLICABLE";
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto">
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
+
             <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">PhD Information</h2>
 
             {/* Ph.D. Status Dropdown */}

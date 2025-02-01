@@ -2,7 +2,8 @@ import { FieldArray, Field, ErrorMessage } from "formik";
 
 const QualificationForm = () => {
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto">
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
+
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Qualifications</h2>
 
             <FieldArray name="qualifications">

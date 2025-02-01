@@ -1,0 +1,6 @@
+.applicant-form-container {
+    position: relative;
+    background-image: url("./assets/images/lsrc_logo.png") no-repeat center center fixed ;
+    background-size: contain;
+    opacity: 1;
+}

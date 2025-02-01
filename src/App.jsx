@@ -9,10 +9,8 @@ import CompetitiveFormExam from "./components/CompetitiveFormExam"
 import PhdForm from "./components/PhdForm"
 import QualificationForm from "./components/QualificationForm"
 import WorkExperienceForm from "./components/WorkExperienceForm"
+import "./App.css"
 
-
-
-// Import your validation schemas
 import {
   personalInfoValidation,
   addressValidation,
@@ -108,82 +106,88 @@ const handleSubmit = async (values, { setSubmitting }) => {
 
 
 const ApplicantForm = () => (
-  <Formik
-    initialValues={initialValues}
-    onSubmit={handleSubmit}
-    validationSchema={Yup.object().shape({
-      personalInfo: personalInfoValidation,
-      address: addressValidation,
-      qualifications: qualificationsValidation,
-      workExperience: workExperienceValidation,
-      phd: phdValidation,
-      competitiveExams: competitiveExamsValidation,
-      resume: fileValidationSchema, // Validation for the resume field
-    })}
-    validateOnChange={true} // Validate when fields change
-    validateOnBlur={true} // Validate when fields lose focus
-  >
-    {({ values, setFieldValue, errors }) => (
-      <Form>
-        <PersonalInfoForm />
-        <AddressForm />
-        <QualificationForm />
-        <CompetitiveFormExam />
-        <WorkExperienceForm />
-        <PhdForm />
+  <div className="applicant-form-container"> {/* Apply background */}
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={Yup.object().shape({
+        personalInfo: personalInfoValidation,
+        address: addressValidation,
+        qualifications: qualificationsValidation,
+        workExperience: workExperienceValidation,
+        phd: phdValidation,
+        competitiveExams: competitiveExamsValidation,
+        resume: fileValidationSchema,
+      })}
+      validateOnChange={true}
+      validateOnBlur={true}
+    >
+      {({ values, setFieldValue, errors }) => (
+        <Form> {/* Ensure form stays on top */}
+          {/* Banner Image at the Top */}
+          <img
+            src="src\assets\images\lsrj_banner.jpg"
+            alt="Application Banner"
+            className="w-full max-h-40 object-cover mb-4"
+          />
 
+          <PersonalInfoForm />
+          <AddressForm />
+          <QualificationForm />
+          <CompetitiveFormExam />
+          <WorkExperienceForm />
+          <PhdForm />
 
-        {/* file upload */}
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-6">
           {/* File Upload Section */}
-          <div className="space-y-2 mb-6">
-            <label htmlFor="resume" className="block text-gray-600 font-medium">
-              Upload Resume
-            </label>
-            <div className="relative">
-              <input
-                id="resume"
-                name="resume"
-                type="file"
-                accept=".pdf"
-                onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
-                className="opacity-0 absolute w-full h-full cursor-pointer"
-              />
-              <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
-                <span className="text-gray-500">
-                  {values.resume ? values.resume.name : "Choose a file"}
-                </span>
-                <button
-                  type="button"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                  onClick={() => document.getElementById("resume").click()}
-                >
-                  Browse
-                </button>
+          <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
+            <div className="space-y-2 mb-6">
+              <label htmlFor="resume" className="block text-gray-600 font-medium">
+                Upload Resume
+              </label>
+              <div className="relative">
+                <input
+                  id="resume"
+                  name="resume"
+                  type="file"
+                  accept=".pdf"
+                  onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+                  className="opacity-0 absolute w-full h-full cursor-pointer"
+                />
+                <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
+                  <span className="text-gray-500">
+                    {values.resume ? values.resume.name : "Choose a file"}
+                  </span>
+                  <button
+                    type="button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    onClick={() => document.getElementById("resume").click()}
+                  >
+                    Browse
+                  </button>
+                </div>
               </div>
+              <ErrorMessage name="resume" component="div" className="text-red-500 text-sm" />
             </div>
-            <ErrorMessage name="resume" component="div" className="text-red-500 text-sm" />
+
+            {/* Submit Button */}
+            <div className="text-center rounded-md mt-6">
+              <button
+                type="submit"
+                className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                Submit
+              </button>
+            </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-
-        {/* Debugging */}
-        <pre>{JSON.stringify(values, null, 2)}</pre>
-        <pre>{JSON.stringify(errors, null, 2)}</pre> {/* Display validation errors */}
-      </Form>
-    )}
-  </Formik>
-
+          {/* Debugging */}
+          <pre>{JSON.stringify(values, null, 2)}</pre>
+          <pre>{JSON.stringify(errors, null, 2)}</pre>
+        </Form>
+      )}
+    </Formik>
+  </div>
 );
 
-
 export default ApplicantForm;
+
