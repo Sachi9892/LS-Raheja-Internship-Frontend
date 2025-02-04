@@ -1,5 +1,5 @@
 //import React from "react";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
@@ -18,7 +18,6 @@ import {
   workExperienceValidation,
   phdValidation,
   competitiveExamsValidation,
-  fileValidationSchema,
 } from "./validation/FormValidation"
 
 const initialValues = {
@@ -49,8 +48,8 @@ const initialValues = {
     isFresher: false, // Default value for Fresher/Experienced
     list: [
       {
-        organizationName: " ",
-        jobTitle: " ",
+        organizationName: "",
+        jobTitle: "",
         isCurrentlyWorking: true,
         fromDate: "",
         toDate: "",
@@ -61,13 +60,13 @@ const initialValues = {
   },
   phd: {
     status: "NOT_APPLICABLE",
-    universityName: " ",
-    yearOfPassing: " ",
-    scopusIndexedPublications: " ",
-    scopusId: " ",
+    universityName: "",
+    yearOfPassing: "",
+    scopusIndexedPublications: "",
+    scopusId: "",
     presentedInConference: false,
-    wosIndexedPublications: " ",
-    wosId: " ",
+    wosIndexedPublications: "",
+    wosId: "",
   },
   competitiveExams: [
     { examName: "NET", isAppeared: false, yearOfPassing: "" },
@@ -75,34 +74,56 @@ const initialValues = {
     { examName: "SLET", isAppeared: false, yearOfPassing: "" },
     { examName: "GATE", isAppeared: false, yearOfPassing: "" },
   ],
-  resume: null,
 };
 
-const handleSubmit = async (values, { setSubmitting }) => {
+// const handleSubmit = async (values, { setSubmitting }) => {
+//   const formData = new FormData();
 
-  console.log("Form data:", values);
+//   // Extract resume and keep the rest as applicant data
+//   const { resume, ...applicantData } = values;
 
-  const formData = new FormData();
+//   formData.append(
+//     "applicant",
+//     new Blob([JSON.stringify(applicantData)], { type: "application/json" })
+//   );
 
-  // Append applicant data
-  formData.append("applicant", new Blob([JSON.stringify(values)], { type: "application/json" }));
+//   if (resume) {
+//     formData.append("resume", resume);
+//     console.log("resume attached ", resume.name);
+//   }
 
-  // Append resume file
-  if (values.resume) {
-    formData.append("resume", values.resume);
-  }
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:8080/lsraheja/apply-now",
+//       formData,
+//       { headers: { "Content-Type": "multipart/form-data" } }
+//     );
+//     console.log("Form submitted successfully:", response.data);
+//   } catch (error) {
+//     console.error("Error submitting form:", error);
+//   } finally {
+//     setSubmitting(false);
+//   }
+// };
 
+const handleSubmit = async (values) => {
   try {
-    const response = await axios.post("http://localhost:8080/lsraheja/apply-now", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    console.log("Form, Resume submitted successfully:", response.data);
+    console.log("Sending Data:", values); // Debugging
+    const response = await axios.post(
+      "http://localhost:8080/lsraheja/test",
+      values, // <-- Add this (values should be the request body)
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Form submitted successfully:", response.data);
   } catch (error) {
-    console.error("Error submitting form:", error);
-  } finally {
-    setSubmitting(false);
+    console.error("Error submitting form:", error.response ? error.response.data : error.message);
   }
 };
+
 
 
 const ApplicantForm = () => (
@@ -117,17 +138,15 @@ const ApplicantForm = () => (
         workExperience: workExperienceValidation,
         phd: phdValidation,
         competitiveExams: competitiveExamsValidation,
-        resume: fileValidationSchema,
       })}
       validateOnChange={true}
       validateOnBlur={true}
     >
       {({ values, setFieldValue, errors }) => (
-        <Form> {/* Ensure form stays on top */}
-          {/* Banner Image at the Top */}
+        <Form>
           <img
             src="src\assets\images\lsrj_banner.jpg"
-            alt="Application Banner"
+            alt="College Banner"
             className="w-full max-h-40 object-cover mb-4"
           />
 
@@ -150,8 +169,15 @@ const ApplicantForm = () => (
                   name="resume"
                   type="file"
                   accept=".pdf"
-                  onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+                  onChange={(event) => {
+                    const file = event.currentTarget.files[0];
+                    console.log("Selected file:", file.name); // Debugging
+                    setFieldValue("resume", file);
+                  }}
+
+
                   className="opacity-0 absolute w-full h-full cursor-pointer"
+
                 />
                 <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
                   <span className="text-gray-500">
@@ -166,7 +192,6 @@ const ApplicantForm = () => (
                   </button>
                 </div>
               </div>
-              <ErrorMessage name="resume" component="div" className="text-red-500 text-sm" />
             </div>
 
             {/* Submit Button */}

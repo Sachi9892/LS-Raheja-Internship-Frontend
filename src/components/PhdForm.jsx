@@ -57,7 +57,6 @@ const PhdForm = () => {
                 <label className="block text-gray-600 font-medium">Year of Passing</label>
                 <Field
                     name="phd.yearOfPassing"
-                    type="number"
                     placeholder="Year of Passing"
                     className={`w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400 ${!isPhdCompleted ? "bg-gray-200 cursor-not-allowed" : ""
                         }`}

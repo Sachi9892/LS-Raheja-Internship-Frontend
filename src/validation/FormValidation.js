@@ -101,18 +101,7 @@ const competitiveExamsValidation = Yup.array().of(
   })
 );
 
-const fileValidationSchema = Yup.mixed()
-  .required("Resume is required")
-  .test(
-    "fileSize",
-    "File size is too large",
-    (value) => !value || value.size <= 5 * 1024 * 1024 // 5MB max
-  )
-  .test(
-    "fileType",
-    "Unsupported file format",
-    (value) => !value || ["application/pdf"].includes(value.type) // Only PDFs
-  );
+
 
 export {
   personalInfoValidation,
@@ -121,5 +110,4 @@ export {
   workExperienceValidation,
   phdValidation,
   competitiveExamsValidation,
-  fileValidationSchema,
 };

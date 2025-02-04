@@ -98,9 +98,8 @@ const PersonalInfoForm = () => {
                 <label className="block text-gray-600 font-medium">Gender</label>
                 <Field as="select" name="personalInfo.gender" className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400">
                     <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
                 </Field>
                 <ErrorMessage name="personalInfo.gender" component="div" className="text-red-500 text-sm" />
             </div>
