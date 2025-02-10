@@ -76,53 +76,55 @@ const initialValues = {
   ],
 };
 
-// const handleSubmit = async (values, { setSubmitting }) => {
-//   const formData = new FormData();
+const handleSubmit = async (values, { setSubmitting }) => {
 
-//   // Extract resume and keep the rest as applicant data
-//   const { resume, ...applicantData } = values;
+  const formData = new FormData();
 
-//   formData.append(
-//     "applicant",
-//     new Blob([JSON.stringify(applicantData)], { type: "application/json" })
-//   );
+  // Extract resume and keep the rest as applicant data
+  const { resume, ...applicantData } = values;
 
-//   if (resume) {
-//     formData.append("resume", resume);
-//     console.log("resume attached ", resume.name);
-//   }
+  formData.append(
+    "applicant",
+    new Blob([JSON.stringify(applicantData)], { type: "application/json" })
+  );
 
-//   try {
-//     const response = await axios.post(
-//       "http://localhost:8080/lsraheja/apply-now",
-//       formData,
-//       { headers: { "Content-Type": "multipart/form-data" } }
-//     );
-//     console.log("Form submitted successfully:", response.data);
-//   } catch (error) {
-//     console.error("Error submitting form:", error);
-//   } finally {
-//     setSubmitting(false);
-//   }
-// };
+  if (resume) {
+    formData.append("resume", resume);
+    console.log("resume attached ", resume.name);
+  }
 
-const handleSubmit = async (values) => {
   try {
-    console.log("Sending Data:", values); // Debugging
     const response = await axios.post(
-      "http://localhost:8080/lsraheja/test",
-      values, // <-- Add this (values should be the request body)
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      "http://localhost:8080/lsraheja/apply-now",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
     console.log("Form submitted successfully:", response.data);
   } catch (error) {
-    console.error("Error submitting form:", error.response ? error.response.data : error.message);
+    console.error("Error submitting form:", error);
+  } finally {
+    setSubmitting(false);
   }
 };
+
+
+// const handleSubmit = async (values) => {
+//   try {
+//     console.log("Sending Data:", values); // Debugging
+//     const response = await axios.post(
+//       "http://localhost:8080/lsraheja/apply-now",
+//       values, // <-- Add this (values should be the request body)
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data"
+//         },
+//       }
+//     );
+//     console.log("Form submitted successfully:", response.data);
+//   } catch (error) {
+//     console.error("Error submitting form:", error.response ? error.response.data : error.message);
+//   }
+// };
 
 
 

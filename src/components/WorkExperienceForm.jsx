@@ -130,7 +130,7 @@ const WorkExperienceForm = () => {
                                         className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
                                     >
                                         <option value="NOT_APPLICABLE">Not Applicable</option>
-                                        <option value="LESS_THAN_1_MONTH">Less than a month</option>
+                                        <option value="LESS_THEN_1_MONTH">Less than a month</option>
                                         <option value="TWO_MONTHS">2 months</option>
                                         <option value="THREE_MONTHS">3 months</option>
                                         <option value="MORE_THAN_3_MONTHS">More than 3 months</option>

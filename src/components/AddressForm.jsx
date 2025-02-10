@@ -17,7 +17,7 @@ const AddressForm = () => {
                     className="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-blue-400"
                 >
                     <option value="">Select State</option>
-                    <option value="MAHARASHTRA">Maharashtra</option>
+                    <option value="Maharashtra">Maharashtra</option>
                     <option value="STATE2">State 2</option>
                     {/* Add more states here */}
                 </Field>
