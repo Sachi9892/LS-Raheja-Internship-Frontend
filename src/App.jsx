@@ -50,7 +50,7 @@ const initialValues = {
       {
         organizationName: "",
         jobTitle: "",
-        isCurrentlyWorking: true,
+        isCurrentlyWorking: false,
         fromDate: "",
         toDate: "",
         currentSalary: "0",
