@@ -1,15 +1,15 @@
-//import React from "react";
+import { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-import AddressForm from "./components/AddressForm"
-import PersonalInfoForm from "./components/PersonalInfoForm"
-import CompetitiveFormExam from "./components/CompetitiveFormExam"
-import PhdForm from "./components/PhdForm"
-import QualificationForm from "./components/QualificationForm"
-import WorkExperienceForm from "./components/WorkExperienceForm"
-import "./App.css"
+import AddressForm from "./components/AddressForm";
+import PersonalInfoForm from "./components/PersonalInfoForm";
+import CompetitiveFormExam from "./components/CompetitiveFormExam";
+import PhdForm from "./components/PhdForm";
+import QualificationForm from "./components/QualificationForm";
+import WorkExperienceForm from "./components/WorkExperienceForm";
+import "./App.css";
 
 import {
   personalInfoValidation,
@@ -18,7 +18,7 @@ import {
   workExperienceValidation,
   phdValidation,
   competitiveExamsValidation,
-} from "./validation/FormValidation"
+} from "./validation/FormValidation";
 
 const initialValues = {
   personalInfo: {
@@ -36,16 +36,18 @@ const initialValues = {
     city: "",
     pinCode: "",
   },
-  qualifications: [{
-    degree: '',
-    educationMode: '',
-    universityName: '',
-    specialization: '',
-    yearOfPassing: '',
-    cgpa: ''
-  }],
+  qualifications: [
+    {
+      degree: "",
+      educationMode: "",
+      universityName: "",
+      specialization: "",
+      yearOfPassing: "",
+      cgpa: "",
+    },
+  ],
   workExperience: {
-    isFresher: false, // Default value for Fresher/Experienced
+    isFresher: false,
     list: [
       {
         organizationName: "",
@@ -76,145 +78,154 @@ const initialValues = {
   ],
 };
 
-const handleSubmit = async (values, { setSubmitting }) => {
+const ApplicantForm = () => {
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const formData = new FormData();
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setIsSubmitting(true);
+    const formData = new FormData();
 
-  // Extract resume and keep the rest as applicant data
-  const { resume, ...applicantData } = values;
+    // Extract resume and keep the rest as applicant data
+    const { resume, ...applicantData } = values;
 
-  formData.append(
-    "applicant",
-    new Blob([JSON.stringify(applicantData)], { type: "application/json" })
-  );
-
-  if (resume) {
-    formData.append("resume", resume);
-    console.log("resume attached ", resume.name);
-  }
-
-  try {
-    const response = await axios.post(
-      "http://localhost:8080/lsraheja/apply-now",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
+    formData.append(
+      "applicant",
+      new Blob([JSON.stringify(applicantData)], { type: "application/json" })
     );
-    console.log("Form submitted successfully:", response.data);
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  } finally {
-    setSubmitting(false);
-  }
-};
 
+    if (resume) {
+      formData.append("resume", resume);
+      console.log("Resume attached:", resume.name);
+    }
 
-// const handleSubmit = async (values) => {
-//   try {
-//     console.log("Sending Data:", values); // Debugging
-//     const response = await axios.post(
-//       "http://localhost:8080/lsraheja/apply-now",
-//       values, // <-- Add this (values should be the request body)
-//       {
-//         headers: {
-//           "Content-Type": "multipart/form-data"
-//         },
-//       }
-//     );
-//     console.log("Form submitted successfully:", response.data);
-//   } catch (error) {
-//     console.error("Error submitting form:", error.response ? error.response.data : error.message);
-//   }
-// };
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/lsraheja/apply-now",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
+      console.log("Form submitted successfully:", response.data);
 
+      if (response.status === 201) {
+        setIsSubmitted(true); // Show success message
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitting(false);
+    }
+  };
 
-const ApplicantForm = () => (
-  <div className="applicant-form-container"> {/* Apply background */}
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={Yup.object().shape({
-        personalInfo: personalInfoValidation,
-        address: addressValidation,
-        qualifications: qualificationsValidation,
-        workExperience: workExperienceValidation,
-        phd: phdValidation,
-        competitiveExams: competitiveExamsValidation,
-      })}
-      validateOnChange={true}
-      validateOnBlur={true}
-    >
-      {({ values, setFieldValue, errors }) => (
-        <Form>
-          <img
-            src="src\assets\images\lsrj_banner.jpg"
-            alt="College Banner"
-            className="w-full max-h-40 object-cover mb-4"
-          />
+  return (
+    <div className="applicant-form-container">
+      {isSubmitted ? (
+        <div className="success-message">
+          <h2 className="text-green-600 text-center font-bold text-2xl">
+            Thank you for applying!
+          </h2>
+          <p className="text-center text-gray-700 mt-2">
+            Your application has been successfully submitted.
+          </p>
+        </div>
+      ) : (
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={Yup.object().shape({
+            personalInfo: personalInfoValidation,
+            address: addressValidation,
+            qualifications: qualificationsValidation,
+            workExperience: workExperienceValidation,
+            phd: phdValidation,
+            competitiveExams: competitiveExamsValidation,
+          })}
+          validateOnChange={true}
+          validateOnBlur={true}
+        >
+          {({ values, setFieldValue, errors }) => (
+            <Form>
+              <img
+                src="src/assets/images/lsrj_banner.jpg"
+                alt="College Banner"
+                className="w-full max-h-40 object-cover mb-4"
+              />
 
-          <PersonalInfoForm />
-          <AddressForm />
-          <QualificationForm />
-          <CompetitiveFormExam />
-          <WorkExperienceForm />
-          <PhdForm />
+              <PersonalInfoForm />
+              <AddressForm />
+              <QualificationForm />
+              <CompetitiveFormExam />
+              <WorkExperienceForm />
+              <PhdForm />
 
-          {/* File Upload Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
-            <div className="space-y-2 mb-6">
-              <label htmlFor="resume" className="block text-gray-600 font-medium">
-                Upload Resume
-              </label>
-              <div className="relative">
-                <input
-                  id="resume"
-                  name="resume"
-                  type="file"
-                  accept=".pdf"
-                  onChange={(event) => {
-                    const file = event.currentTarget.files[0];
-                    console.log("Selected file:", file.name); // Debugging
-                    setFieldValue("resume", file);
-                  }}
+              {/* File Upload Section */}
+              <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
+                <div className="space-y-2 mb-6">
+                  <label htmlFor="resume" className="block text-gray-600 font-medium">
+                    Upload Resume
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="resume"
+                      name="resume"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(event) => {
+                        const file = event.currentTarget.files[0];
+                        console.log("Selected file:", file.name);
+                        setFieldValue("resume", file);
+                      }}
+                      className="opacity-0 absolute w-full h-full cursor-pointer"
+                    />
+                    <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
+                      <span className="text-gray-500">
+                        {values.resume ? values.resume.name : "Choose a file"}
+                      </span>
+                      <button
+                        type="button"
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                        onClick={() => document.getElementById("resume").click()}
+                      >
+                        Browse
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-
-                  className="opacity-0 absolute w-full h-full cursor-pointer"
-
-                />
-                <div className="flex items-center justify-between p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100">
-                  <span className="text-gray-500">
-                    {values.resume ? values.resume.name : "Choose a file"}
-                  </span>
+                {/* Submit Button with Loader */}
+                <div className="text-center rounded-md mt-6">
                   <button
-                    type="button"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                    onClick={() => document.getElementById("resume").click()}
+                    type="submit"
+                    className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 flex items-center justify-center"
+                    disabled={isSubmitting}
                   >
-                    Browse
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="animate-spin h-5 w-5 mr-2 border-t-2 border-white rounded-full"
+                          viewBox="0 0 24 24"
+                        ></svg>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
                   </button>
                 </div>
               </div>
-            </div>
 
-            {/* Submit Button */}
-            <div className="text-center rounded-md mt-6">
-              <button
-                type="submit"
-                className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-
-          {/* Debugging */}
-          <pre>{JSON.stringify(values, null, 2)}</pre>
-          <pre>{JSON.stringify(errors, null, 2)}</pre>
-        </Form>
+              {/* Debugging */}
+              <pre>{JSON.stringify(values, null, 2)}</pre>
+              <pre>{JSON.stringify(errors, null, 2)}</pre>
+            </Form>
+          )}
+        </Formik>
       )}
-    </Formik>
-  </div>
-);
+    </div>
+  );
+};
 
 export default ApplicantForm;
-

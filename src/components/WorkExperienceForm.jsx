@@ -169,6 +169,20 @@ const WorkExperienceForm = () => {
                                                 className="text-red-500 text-sm"
                                             />
 
+                                            {/* Salary */}
+                                            <label className="block text-gray-600 font-medium mt-3">Salary</label>
+                                            <Field
+                                                name={`workExperience.list[${index}].currentSalary`}
+                                                placeholder="Enter Salary"
+                                                type="number"
+                                                className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                                            />
+                                            <ErrorMessage
+                                                name={`workExperience.list[${index}].currentSalary`}
+                                                component="div"
+                                                className="text-red-500 text-sm"
+                                            />
+
                                             {/* Remove Experience Button */}
                                             <button
                                                 type="button"
