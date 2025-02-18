@@ -2,10 +2,7 @@ import { Field, ErrorMessage } from "formik";
 
 const PersonalInfoForm = () => {
     return (
-
         <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-3 border-2 border-black">
-
-
             <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">Personal Information</h2>
 
             {/* Role Selection */}
@@ -102,6 +99,76 @@ const PersonalInfoForm = () => {
                     <option value="FEMALE">Female</option>
                 </Field>
                 <ErrorMessage name="personalInfo.gender" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* Marital Status */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Marital Status</label>
+                <Field as="select" name="personalInfo.maritalStatus" className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400">
+                    <option value="">Select Marital Status</option>
+                    <option value="MARRIED">Married</option>
+                    <option value="SINGLE">Single</option>
+                    <option value="DIVORCED">Divorced</option>
+                    <option value="WIDOWED">Widowed</option>
+                </Field>
+                <ErrorMessage name="personalInfo.maritalStatus" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* Number of Children */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Number of Children</label>
+                <Field
+                    name="personalInfo.noOfChilds"
+                    placeholder="Number of Children"
+                    type="number"
+                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="personalInfo.noOfChilds" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* Caste */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Caste</label>
+                <Field
+                    name="personalInfo.caste"
+                    placeholder="Caste"
+                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="personalInfo.caste" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* Aadhar Number */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Aadhar Number</label>
+                <Field
+                    name="personalInfo.aadhar"
+                    placeholder="Aadhar Number"
+                    type="number"
+                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="personalInfo.aadhar" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* PAN */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">PAN</label>
+                <Field
+                    name="personalInfo.pan"
+                    placeholder="PAN"
+                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="personalInfo.pan" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            {/* Passport Number */}
+            <div className="mb-4">
+                <label className="block text-gray-600 font-medium">Passport Number</label>
+                <Field
+                    name="personalInfo.passport"
+                    placeholder="Passport Number"
+                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
+                />
+                <ErrorMessage name="personalInfo.passport" component="div" className="text-red-500 text-sm" />
             </div>
         </div>
     );

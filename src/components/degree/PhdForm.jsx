@@ -64,46 +64,7 @@ const PhdForm = () => {
                 />
                 <ErrorMessage name="phd.yearOfPassing" component="div" className="text-red-500 text-sm" />
             </div>
-
-            {/* Scopus Indexed Publications */}
-            <div className="mb-6">
-                <label className="block text-gray-600 font-medium">Number of Scopus Indexed Publications</label>
-                <Field
-                    name="phd.scopusIndexedPublications"
-                    placeholder="Scopus Indexed Publications"
-                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
-                />
-            </div>
-
-            {/* Scopus ID */}
-            <div className="mb-6">
-                <label className="block text-gray-600 font-medium">Scopus ID</label>
-                <Field
-                    name="phd.scopusId"
-                    placeholder="Scopus ID"
-                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
-                />
-            </div>
-
-            {/* WoS Indexed Publications */}
-            <div className="mb-6">
-                <label className="block text-gray-600 font-medium">Number of WoS Indexed Publications</label>
-                <Field
-                    name="phd.wosIndexedPublications"
-                    placeholder="WoS Indexed Publications"
-                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
-                />
-            </div>
-
-            {/* WoS ID */}
-            <div className="mb-6">
-                <label className="block text-gray-600 font-medium">WoS ID</label>
-                <Field
-                    name="phd.wosId"
-                    placeholder="WoS ID"
-                    className="w-full p-2 border rounded-md mt-1 focus:ring-2 focus:ring-blue-400"
-                />
-            </div>
+    
 
             {/* Papers Presented in Conference */}
             <div className="mb-6">
