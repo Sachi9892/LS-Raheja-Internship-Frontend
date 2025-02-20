@@ -22,6 +22,8 @@ import {
     workExperienceValidation,
     phdValidation,
     competitiveExamsValidation,
+    courseTaughtValidation,
+    researchPaperValidation,
 } from "../../validation/FormValidation"
 
 const initialValues = {
@@ -32,7 +34,7 @@ const initialValues = {
         lastName: "",
         email: "",
         phone: "",
-        dob: "",
+        dob: '',
         gender: "",
         maritalStatus: "",
         noOfChilds: "",
@@ -63,8 +65,8 @@ const initialValues = {
                 organizationName: "",
                 jobTitle: "",
                 isCurrentlyWorking: false,
-                fromDate: "",
-                toDate: "",
+                fromDate: '',
+                toDate: '',
                 currentSalary: "0",
                 noticePeriod: "NOT_APPLICABLE",
             },
@@ -94,8 +96,8 @@ const initialValues = {
         subjectName: "",
         degreeType: "",
         typeOfContract: "",
-        fromDate: "",
-        toDate: "",
+        fromDate: '',
+        toDate: '',
         yearOfExp: "",
         lastSalary: "",
         approvedByUniversity: "",
@@ -123,11 +125,24 @@ const DegreeApplicationForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting, setErrors, validateForm }) => {
         setIsSubmitting(true);
-        const formData = new FormData();
 
-        // Extract resume and keep the rest as applicant data
+        // Manually trigger validation and get errors
+        const errors = await validateForm();
+
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors); // Display errors in the form
+            setIsSubmitting(false);
+            setSubmitting(false);
+
+            // Show alert message
+            alert("Please fill all the required fields before submitting.");
+            return;
+        }
+
+        // If no validation errors, proceed with submission
+        const formData = new FormData();
         const { resume, ...applicantData } = values;
 
         formData.append(
@@ -160,6 +175,7 @@ const DegreeApplicationForm = () => {
         }
     };
 
+
     return (
         <div className="applicant-form-container">
             {isSubmitted ? (
@@ -174,7 +190,6 @@ const DegreeApplicationForm = () => {
             ) : (
                 <Formik
                     initialValues={initialValues}
-                    onSubmit={handleSubmit}
                     validationSchema={Yup.object().shape({
                         personalInfo: personalInfoValidation,
                         address: addressValidation,
@@ -182,9 +197,12 @@ const DegreeApplicationForm = () => {
                         workExperience: workExperienceValidation,
                         phd: phdValidation,
                         competitiveExams: competitiveExamsValidation,
+                        ResearchPaperForm: researchPaperValidation,
+                        CourseTaughtForm: courseTaughtValidation
                     })}
                     validateOnChange={true}
                     validateOnBlur={true}
+                    onSubmit={(values, actions) => handleSubmit(values, actions)}
                 >
                     {({ values, setFieldValue, errors }) => (
                         <Form>
@@ -299,7 +317,13 @@ const DegreeApplicationForm = () => {
                                 </div>
 
                                 {/* Submit Button with Loader */}
+                                {/* Submit Button */}
                                 <div className="text-center rounded-md mt-6">
+                                    {Object.keys(errors).length > 0 && (
+                                        <p className="text-red-600 text-center mb-2">
+                                            Please fill all the required fields.
+                                        </p>
+                                    )}
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-center text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 flex items-center justify-center"

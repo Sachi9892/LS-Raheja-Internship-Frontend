@@ -30,50 +30,61 @@ const qualificationValidation = Yup.array().of(
 // Additional Information Validation
 const additionalInfoValidation = Yup.object().shape({
   motherTounge: Yup.string().required("Mother Tongue is required"),
-  expectedSalary: Yup.number().required("Expected Salary is required"),
-  ets: Yup.number().required("English Typing Per Minute Required"),
-  mts: Yup.number().required("Marathi Typing Per Minute Required"),
+  expectedSalary: Yup.number()
+    .positive("Salary must be a positive number")
+    .required("Expected Salary is required"),
+  ets: Yup.number()
+    .positive("Must be a positive number")
+    .required("English Typing Per Minute Required"),
+  mts: Yup.number()
+    .positive("Must be a positive number")
+    .required("Marathi Typing Per Minute Required"),
   otherLanguage: Yup.string().required("Other Language is required"),
   joinDate: Yup.date()
     .required("Joining date is required")
     .min(today, "Joining date must be in the future"),
 });
 
-// Work Experience Validation
-// const workExperienceValidation = Yup.object().shape({
-//   isFresher: Yup.boolean().required(
-//     "Please select whether you are a fresher or experienced"
-//   ),
-//   workExp: Yup.array().when("isFresher", {
-//     is: false, // If the applicant is experienced
-//     then: Yup.array()
-//       .of(
-//         Yup.object().shape({
-//           orgName: Yup.string().required("Organization Name is required"),
-//           position: Yup.string().required("Position is required"),
-//           workNature: Yup.string().required("Nature of Work is required"),
-//           fromDate: Yup.date().required("From Date is required"),
-//           toDate: Yup.date()
-//             .required("To Date is required")
-//             .when("fromDate", (fromDate, schema) =>
-//               fromDate
-//                 ? schema.min(fromDate, "To Date must be after From Date")
-//                 : schema
-//             ),
-//           isCurrentlyWorking: Yup.boolean(),
-//           salary: Yup.number()
-//             .required("Salary is required")
-//             .positive("Salary must be a positive number"),
-//           rfl: Yup.string().required("Reason for Leaving is required"),
-//         })
-//       )
-//       .min(1, "At least one work experience entry is required"),
-//     otherwise: Yup.array().notRequired(), // If the applicant is a fresher, work experience is optional
-//   }),
-// });
+//Work Experience Validation
+const workExperienceValidation = Yup.object().shape({
+  isFresher: Yup.boolean().required(
+    "Please select whether you are a fresher or experienced"
+  ),
+  workExp: Yup.array().when("isFresher", {
+    is: false, // If the applicant is experienced
+    then: Yup.array()
+      .of(
+        Yup.object().shape({
+          orgName: Yup.string().required("Organization Name is required"),
+          position: Yup.string().required("Position is required"),
+          workNature: Yup.string().required("Nature of Work is required"),
+          fromDate: Yup.date().required("From Date is required"),
+          toDate: Yup.date()
+            .nullable()
+            .required("To Date is required")
+            .when("fromDate", {
+              is: (fromDate) => !!fromDate, // Ensure fromDate exists
+              then: (schema) =>
+                schema.min(
+                  Yup.ref("fromDate"),
+                  "To Date must be after From Date"
+                ),
+            }),
+          isCurrentlyWorking: Yup.boolean(),
+          salary: Yup.number()
+            .required("Salary is required")
+            .positive("Salary must be a positive number"),
+          rfl: Yup.string().required("Reason for Leaving is required"),
+        })
+      )
+      .min(1, "At least one work experience entry is required"),
+    otherwise: Yup.array().notRequired(), // If the applicant is a fresher, work experience is optional
+  }),
+});
 
 export {
   personalInfoValidation,
   additionalInfoValidation,
   qualificationValidation,
+  workExperienceValidation,
 };

@@ -1,5 +1,8 @@
 import * as Yup from "yup";
 
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 const personalInfoValidation = Yup.object({
   role: Yup.string().required("Role is required"),
   firstName: Yup.string().required("First name is required"),
@@ -33,7 +36,11 @@ const qualificationsValidation = Yup.array().of(
     yearOfPassing: Yup.string()
       .matches(/^\d{4}$/, "Year must be 4 digits")
       .required("Year of passing is required"),
-    cgpa: Yup.number().min(0).max(10).required("CGPA is required"),
+    cgpa: Yup.number()
+      .min(0)
+      .max(10)
+      .positive("Must be a positive number")
+      .required("CGPA is required"),
   })
 );
 
@@ -50,19 +57,19 @@ const workExperienceValidation = Yup.object({
             "Organization name is required"
           ),
           jobTitle: Yup.string().required("Job title is required"),
-          isCurrentlyWorking: Yup.boolean().required(
-            "Specify if currently working"
-          ),
           fromDate: Yup.date().required("From Date is required"),
           toDate: Yup.date()
+            .nullable()
             .required("To Date is required")
-            .when("fromDate", (fromDate, schema) =>
-              fromDate
-                ? schema.min(fromDate, "To Date must be after From Date")
-                : schema
-            ),
+            .when("fromDate", {
+              is: (fromDate) => !!fromDate,
+              then: (schema) =>
+                schema.min(
+                  Yup.ref("fromDate"),
+                  "To Date must be after From Date"
+                ),
+            }),
           currentSalary: Yup.number().min(0, "Salary cannot be negative"),
-          noticePeriod: Yup.string().required("Notice period is required"),
         })
       ),
   }),
@@ -81,11 +88,9 @@ const phdValidation = Yup.object({
         .matches(/^\d{4}$/, "Year must be 4 digits")
         .required("Year of passing is required"),
   }),
-  scopusIndexedPublications: Yup.string(),
-  scopusId: Yup.string(),
-  presentedInConference: Yup.boolean(),
-  wosIndexedPublications: Yup.string(),
-  wosId: Yup.string(),
+  presentedInConference: Yup.boolean().required(
+    "Presented in confrence required"
+  ),
 });
 
 const competitiveExamsValidation = Yup.array().of(
@@ -104,11 +109,73 @@ const competitiveExamsValidation = Yup.array().of(
   })
 );
 
+
+const courseTaughtValidation = Yup.object({
+  collegeName: Yup.string().optional(),
+  className: Yup.string().optional(),
+  subjectName: Yup.string().optional(),
+  degreeType: Yup.string().optional(),
+  typeOfContract: Yup.string().optional(),
+  fromDate: Yup.date()
+    .nullable()
+    .transform((value, originalValue) => (originalValue === "" ? null : value)), // Optional
+  toDate: Yup.date()
+    .nullable()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .max(today, "To Date cannot be in the future"), // If selected, must not be in the future
+  yearOfExp: Yup.string()
+    .matches(/^\d{4}$/, "Year must be exactly 4 digits") // Must be in YYYY format
+    .optional(),
+  lastSalary: Yup.number()
+    .nullable()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .min(0, "Last Salary must be positive"), // Must be positive
+  approvedByUniversity: Yup.string().optional(),
+  letterNO: Yup.string().optional(),
+  letterDate: Yup.date()
+    .nullable()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .max(today, "Letter Date cannot be in the future"), // Must not be in the future
+});
+
+
+const researchPaperValidation = Yup.array().of(
+  Yup.object({
+    scopusIndexedPublications: Yup.string().optional(),
+    scopusId: Yup.string().optional(),
+    presentedInConference: Yup.string().optional(),
+    nameOfJournal: Yup.string().optional(),
+    yearOfPublication: Yup.string()
+      .matches(/^\d{4}$/, "Year must be exactly 4 digits") // Must be in YYYY format
+      .test(
+        "is-past-year",
+        "Year of Publication must be in the past",
+        (value) => !value || parseInt(value, 10) <= today.getFullYear()
+      )
+      .optional(),
+    numberOfApproved: Yup.string().optional(),
+  })
+);
+
+const expectedSalaryValidation = Yup.number()
+  .nullable()
+  .transform((value, originalValue) => (originalValue === "" ? null : value))
+  .min(0, "Expected Salary must be positive"); // Must be positive if provided
+
+
+
+
+
 export {
+
   personalInfoValidation,
   addressValidation,
   qualificationsValidation,
   workExperienceValidation,
   phdValidation,
   competitiveExamsValidation,
+  expectedSalaryValidation,
+  courseTaughtValidation,
+  researchPaperValidation
+  
 };
