@@ -53,11 +53,14 @@ const workExperienceValidation = Yup.object({
           isCurrentlyWorking: Yup.boolean().required(
             "Specify if currently working"
           ),
-          fromDate: Yup.date().required("Start date is required"),
-          toDate: Yup.date().when("isCurrentlyWorking", {
-            is: false,
-            then: (schema) => schema.required("End date is required"),
-          }),
+          fromDate: Yup.date().required("From Date is required"),
+          toDate: Yup.date()
+            .required("To Date is required")
+            .when("fromDate", (fromDate, schema) =>
+              fromDate
+                ? schema.min(fromDate, "To Date must be after From Date")
+                : schema
+            ),
           currentSalary: Yup.number().min(0, "Salary cannot be negative"),
           noticePeriod: Yup.string().required("Notice period is required"),
         })
@@ -100,8 +103,6 @@ const competitiveExamsValidation = Yup.array().of(
     }),
   })
 );
-
-
 
 export {
   personalInfoValidation,

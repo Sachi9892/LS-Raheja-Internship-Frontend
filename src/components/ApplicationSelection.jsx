@@ -2,10 +2,12 @@ import { useState } from "react";
 
 import DegreeApplicationForm from "./degree/DegreeApplicationFrom";
 import JuniorApplicationForm from "./junior/JuniorApplicationForm";
-import NTApplicationForm from "./non-teaching/NTApplicationForm";
+import NonTeachingApplicationForm from "./non-teaching/NonTeachingApplicationForm";
+
 
 
 const ApplicationSelection = () => {
+
     const [selectedForm, setSelectedForm] = useState(null);
 
     return (
@@ -39,7 +41,7 @@ const ApplicationSelection = () => {
                 <div className="w-full">
                     {/* Render the selected form */}
                     {selectedForm === "degree" && <DegreeApplicationForm />}
-                    {selectedForm === "nonTeaching" && <NTApplicationForm />}
+                    {selectedForm === "nonTeaching" && <NonTeachingApplicationForm />}
                     {selectedForm === "junior" && <JuniorApplicationForm />}
 
                     {/* Back Button */}

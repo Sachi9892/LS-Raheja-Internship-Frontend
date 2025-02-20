@@ -142,7 +142,7 @@ const DegreeApplicationForm = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/lsraheja/apply-now",
+                "http://localhost:8080/lsraheja/degree/apply-now",
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
